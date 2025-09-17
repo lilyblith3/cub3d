@@ -1,0 +1,8 @@
+/*
+1- check if file exists 
+2- check file has .cub extention
+3- open file for reading
+
+----------------------------------
+Now I need to read and parse elements 
+*/
