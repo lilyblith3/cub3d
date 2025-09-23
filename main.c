@@ -105,8 +105,47 @@ int valid_argument(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-          t_game game;
+	t_game	game;
+	char	*file_content;
+	char	**lines;
+	int		line_count;
 
-          if (!validate_arguments(argc, argv))
-                    return (1);
+	if (!valid_argument(argc, argv))
+		return (1);
+	
+	init_game_struct(&game, argv[1]);
+	
+	file_content = read_entire_file(argv[1]);
+	if (!file_content)
+	{
+		print_error("Failed to read file");
+		free_game_struct(&game);
+		return (1);
+	}
+	
+	line_count = count_lines(file_content);
+	if (line_count == 0)
+	{
+		print_error("Empty file");
+		free(file_content);
+		free_game_struct(&game);
+		return (1);
+	}
+	
+	lines = split_lines(file_content, line_count);
+	if (!lines)
+	{
+		print_error("Failed to split file content");
+		free(file_content);
+		free_game_struct(&game);
+		return (1);
+	}
+	
+	printf("Successfully read %d lines from %s\n", line_count, argv[1]);
+	
+	free(file_content);
+	free_string_array(lines);
+	free_game_struct(&game);
+	
+	return (0);
 }
