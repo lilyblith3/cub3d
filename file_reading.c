@@ -22,10 +22,6 @@ char	*ft_strdup(const char *s)
 	return (dup);
 }
 
-int	ft_isspace(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\r');
-}
 
 char	*trim_whitespace(char *str)
 {
