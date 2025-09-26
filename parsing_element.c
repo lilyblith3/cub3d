@@ -9,11 +9,25 @@ static char *get_color_part(char *trimmed)
         i++;
     while (trimmed[i] && ft_isspace(trimmed[i]))
         i++;
-    return (trimmed + i);
+    return (trim_whitespace(trimmed + i));
+}
+
+static int check_duplicate_color(t_game *game, char *trimmed)
+{
+    if (ft_strncmp(trimmed, "F", 1) == 0 && game->floor_color[0] != -1)
+        return (0);
+    if (ft_strncmp(trimmed, "C", 1) == 0 && game->ceiling_color[0] != -1)
+        return (0);
+    return (1);
 }
 
 static int assign_color(char *trimmed, char *color_part, t_game *game)
 {
+    if (!check_duplicate_color(game, trimmed))
+    {
+        printf("Error: Duplicate color definition\n");
+        return (0);
+    }
     if (ft_strncmp(trimmed, "F", 1) == 0)
     {
         if (!parse_colors_values(color_part, game->floor_color))
