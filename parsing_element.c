@@ -16,7 +16,7 @@ static int assign_color(char *trimmed, char *color_part, t_game *game)
 {
     if (ft_strncmp(trimmed, "F", 1) == 0)
     {
-        if (!_values(color_part, game->floor_color))
+        if (!parse_colors_values(color_part, game->floor_color))
         {
             printf("Error: Invalid floor color format\n");
             return (0);
@@ -24,7 +24,7 @@ static int assign_color(char *trimmed, char *color_part, t_game *game)
     }
     else if (ft_strncmp(trimmed, "C", 1) == 0)
     {
-        if (!parse_color_values(color_part, game->ceiling_color))
+        if (!parse_colors_values(color_part, game->ceiling_color))
         {
             printf("Error: Invalid ceiling color format\n");
             return (0);
@@ -94,3 +94,4 @@ int parse_elements(char **lines, t_game *game)
     }
     return (i);
 }
+
