@@ -225,3 +225,4 @@ void	free_game_struct(t_game *game)
 	if (game->map)
 		free_string_array(game->map);
 }
+

@@ -4,7 +4,7 @@ int	is_texture_line(char *line)
 {
           char *trimmed;
 
-          trimmed = whitespace_trim(line);
+          trimmed = trim_whitespace(line);
           if (!trimmed)
                     return (0);
           if (ft_strncmp(trimmed, "NO ", 3) == 0
@@ -24,7 +24,7 @@ int is_color_line(char *line)
 {
           char *trimmed;
 
-          trimmed = whitespace_trimmed(line);
+          trimmed = trim_whitespace(line);
           if (!trimmed)
                     return (0);
           if (ft_strncmp(trimmed, "F ", 2) == 0

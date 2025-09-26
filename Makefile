@@ -2,7 +2,7 @@ NAME = cub
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = main.c file_reading.c  textures_colors.c utils.c 
+SRC = main.c file_reading.c  textures_colors.c utilis.c 
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
