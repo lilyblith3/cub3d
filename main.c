@@ -74,12 +74,28 @@ int valid_argument(int argc, char **argv)
           return (1);
 }
 
+
+void	print_parsed_elements(t_game *game)
+{
+	printf("\n=== PARSED ELEMENTS ===\n");
+	printf("North texture: %s\n", game->north_texture ? game->north_texture : "NULL");
+	printf("South texture: %s\n", game->south_texture ? game->south_texture : "NULL");
+	printf("West texture: %s\n", game->west_texture ? game->west_texture : "NULL");
+	printf("East texture: %s\n", game->east_texture ? game->east_texture : "NULL");
+	printf("Floor color: R:%d G:%d B:%d\n", 
+		game->floor_color[0], game->floor_color[1], game->floor_color[2]);
+	printf("Ceiling color: R:%d G:%d B:%d\n",
+		game->ceiling_color[0], game->ceiling_color[1], game->ceiling_color[2]);
+	printf("========================\n\n");
+}
+
 int main(int argc, char **argv)
 {
 	t_game	game;
 	char	*file_content;
 	char	**lines;
 	int		line_count;
+          int map_start;
 
 	if (!valid_argument(argc, argv))
 		return (1);
@@ -111,6 +127,15 @@ int main(int argc, char **argv)
 		free_game_struct(&game);
 		return (1);
 	}
+          map_start = parse_elements(lines, &game);
+          if (map_start == 0)
+	{
+		free(file_content);
+		free_string_array(lines);
+		free_game_struct(&game);
+		return (1);
+	}
+	print_parsed_elements(&game);
 	
 	printf("Successfully read %d lines from %s\n", line_count, argv[1]);
 	
