@@ -1,0 +1,18 @@
+1- I need to check if its a texture check if line starts with NO WE EA SO 
+2- parse texture line by cleaning the spaces to point to the path after NO WE EA OR SO 
+3- assign texture 
+
+we check if the for the color is it F OR C 
+
+"  NO   ./textures/north_wall.xpm  "
+is texture line true return 1
+get texture path points to ./textures/north_wall.xpm
+validate_texture_file() → Tries to open the file
+assign_texture() ______  Sets game->north_texture = "./textures/north_wall.xpm
+
+
+and for a line like "F 220,100,0"
+trim_whitespace() → "F 220,100,0"
+is_color_line() → Returns 1 (true)
+get_color_part() → Points to "220,100,0"
+parse_color_values() → Parses RGB values into game->floor_color[]

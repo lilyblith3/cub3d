@@ -16,7 +16,7 @@ static int assign_color(char *trimmed, char *color_part, t_game *game)
 {
     if (ft_strncmp(trimmed, "F", 1) == 0)
     {
-        if (!parse_color_values(color_part, game->floor_color))
+        if (!_values(color_part, game->floor_color))
         {
             printf("Error: Invalid floor color format\n");
             return (0);
