@@ -63,4 +63,7 @@ int     file_exists_and_readable(char *file_name);
 
 void    print_error(char *msg);
 
+int	parse_map(char **lines, int start_idx, t_game *game);
+void	print_final_result(t_game *game);
+
 #endif

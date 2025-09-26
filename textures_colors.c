@@ -52,15 +52,18 @@ int validate_texture_file(char *path)
 
 static char *get_texture_path(char *trimmed)
 {
-          int i;
+    int i = 0;
+    while (trimmed[i] && ft_isspace(trimmed[i]))
+        i++;
+    while (trimmed[i] && !ft_isspace(trimmed[i]))
+        i++;
 
-          i = 0;
-          while (trimmed[i] && ft_isspace(trimmed[i]))
-                    i++;
-          while (trimmed[i] && !ft_isspace(trimmed[i]))
-                    i++;
-          return (trimmed + i);
+    while (trimmed[i] && ft_isspace(trimmed[i]))
+        i++;
+
+    return ft_strdup(trimmed + i);   
 }
+
 
 static void assign_texture(t_game *game, char *trimmed, char *path)
 {

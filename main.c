@@ -89,19 +89,17 @@ void	print_parsed_elements(t_game *game)
 	printf("========================\n\n");
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_game	game;
 	char	*file_content;
 	char	**lines;
 	int		line_count;
-          int map_start;
+	int		map_start;
 
 	if (!valid_argument(argc, argv))
 		return (1);
-	
 	init_game_struct(&game, argv[1]);
-	
 	file_content = read_entire_file(argv[1]);
 	if (!file_content)
 	{
@@ -109,7 +107,6 @@ int main(int argc, char **argv)
 		free_game_struct(&game);
 		return (1);
 	}
-	
 	line_count = count_lines(file_content);
 	if (line_count == 0)
 	{
@@ -118,7 +115,6 @@ int main(int argc, char **argv)
 		free_game_struct(&game);
 		return (1);
 	}
-	
 	lines = split_lines(file_content, line_count);
 	if (!lines)
 	{
@@ -127,21 +123,24 @@ int main(int argc, char **argv)
 		free_game_struct(&game);
 		return (1);
 	}
-          map_start = parse_elements(lines, &game);
-          if (map_start == 0)
+	map_start = parse_elements(lines, &game);
+	if (map_start == 0)
 	{
 		free(file_content);
 		free_string_array(lines);
 		free_game_struct(&game);
 		return (1);
 	}
-	print_parsed_elements(&game);
-	
-	printf("Successfully read %d lines from %s\n", line_count, argv[1]);
-	
+	if (!parse_map(lines, map_start, &game))
+	{
+		free(file_content);
+		free_string_array(lines);
+		free_game_struct(&game);
+		return (1);
+	}
+	print_final_result(&game);
 	free(file_content);
 	free_string_array(lines);
 	free_game_struct(&game);
-	
 	return (0);
 }
