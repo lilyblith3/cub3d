@@ -32,51 +32,126 @@ int is_color_line(char *line)
     return (0);
 }
 
+// ADD these new functions to textures_colors.c
+
+static int	check_duplicate_texture(t_game *game, char *trimmed)
+{
+	if (ft_strncmp(trimmed, "NO", 2) == 0 && game->north_texture)
+	{
+		printf("Error: Duplicate north texture\n");
+		return (0);
+	}
+	if (ft_strncmp(trimmed, "SO", 2) == 0 && game->south_texture)
+	{
+		printf("Error: Duplicate south texture\n");
+		return (0);
+	}
+	if (ft_strncmp(trimmed, "WE", 2) == 0 && game->west_texture)
+	{
+		printf("Error: Duplicate west texture\n");
+		return (0);
+	}
+	if (ft_strncmp(trimmed, "EA", 2) == 0 && game->east_texture)
+	{
+		printf("Error: Duplicate east texture\n");
+		return (0);
+	}
+	return (1);
+}
+
+static int	validate_texture_extension(char *path)
+{
+	int	len;
+
+	if (!path)
+		return (0);
+	len = ft_strlen(path);
+	if (len < 5)
+		return (0);
+	if (ft_strncmp(path + len - 4, ".xpm", 4) != 0)
+		return (0);
+	return (1);
+}
+
+static int	check_extra_content(char *trimmed, char *path)
+{
+	int	expected_len;
+	int	actual_len;
+
+	expected_len = 2 + 1 + ft_strlen(path);
+	actual_len = ft_strlen(trimmed);
+	if (actual_len > expected_len)
+	{
+		printf("Error: Extra content after texture path\n");
+		return (0);
+	}
+	return (1);
+}
+
 int validate_texture_file(char *path)
 {
-    int fd;
+	int	fd;
 
-    if (!path)
-        return (0);
-    fd = open(path, O_RDONLY);
-    if (fd == -1)
-        return (0);
-    close(fd);
-    return (1);
+	if (!path || ft_strlen(path) == 0)
+	{
+		printf("Error: Empty texture path\n");
+		return (0);
+	}
+	if (!validate_texture_extension(path))
+	{
+		printf("Error: Texture must be .xpm file: %s\n", path);
+		return (0);
+	}
+	if (is_directory(path))
+	{
+		printf("Error: Texture path is a directory: %s\n", path);
+		return (0);
+	}
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+	{
+		printf("Error: Texture file not found: %s\n", path);
+		return (0);
+	}
+	close(fd);
+	return (1);
 }
+
 static char *get_texture_path(char *trimmed)
 {
-    int i = 0;
-    char *start;
-    char *result;
-    int len;
+	int		i;
+	char	*start;
+	char	*result;
+	int		len;
 
-    while (trimmed[i] && !ft_isspace(trimmed[i]))
-        i++;
-    while (trimmed[i] && ft_isspace(trimmed[i]))
-        i++;
-
-    start = trimmed + i;
-    len = ft_strlen(start);
-    result = malloc(len + 1);
-    if (!result)
-        return (NULL);
-
-    i = 0;
-    while (i < len)
-    {
-        result[i] = start[i];
-        i++;
-    }
-    result[i] = '\0';
-    i = len - 1;
-    while (i >= 0 && ft_isspace(result[i]))
-    {
-        result[i] = '\0';
-        i--;
-    }
-    return (result);
+	i = 0;
+	while (trimmed[i] && !ft_isspace(trimmed[i]))
+		i++;
+	while (trimmed[i] && ft_isspace(trimmed[i]))
+		i++;
+	start = trimmed + i;
+	len = ft_strlen(start);
+	if (len == 0)
+		return (NULL);
+	result = malloc(len + 1);
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		result[i] = start[i];
+		i++;
+	}
+	result[i] = '\0';
+	i = len - 1;
+	while (i >= 0 && ft_isspace(result[i]))
+	{
+		result[i] = '\0';
+		i--;
+	}
+	return (result);
 }
+
 static void assign_texture(t_game *game, char *trimmed, char *path)
 {
     if (ft_strncmp(trimmed, "NO", 2) == 0)
@@ -91,31 +166,41 @@ static void assign_texture(t_game *game, char *trimmed, char *path)
 
 int parse_texture_line(char *line, t_game *game)
 {
-    char *trimmed, *path;
+	char	*trimmed;
+	char	*path;
 
-    trimmed = trim_whitespace(line);
-    if (!trimmed)
-        return (0);
-
-    path = get_texture_path(trimmed);
-    if (!path)
-    {
-        free(trimmed);
-        return (0);
-    }
-    if (!validate_texture_file(path))
-    {
-        printf("Error: Texture file not found: %s\n", path);
-        free(path);
-        free(trimmed);
-        return (0);
-    }
-    assign_texture(game, trimmed, path);
-    free(trimmed);
-    return (1);
+	trimmed = trim_whitespace(line);
+	if (!trimmed)
+		return (0);
+	if (!check_duplicate_texture(game, trimmed))
+	{
+		free(trimmed);
+		return (0);
+	}
+	path = get_texture_path(trimmed);
+	if (!path)
+	{
+		printf("Error: Missing texture path\n");
+		free(trimmed);
+		return (0);
+	}
+	if (!check_extra_content(trimmed, path))
+	{
+		free(path);
+		free(trimmed);
+		return (0);
+	}
+	if (!validate_texture_file(path))
+	{
+		free(path);
+		free(trimmed);
+		return (0);
+	}
+	assign_texture(game, trimmed, path);
+	free(trimmed);
+	return (1);
 }
 
-// fix things
 static int	ft_isdigit_str(char *str)
 {
 	int	i;

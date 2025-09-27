@@ -11,8 +11,8 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
 test: $(NAME)
-	chmod +x test_colors.sh
-	./test_colors.sh
+	chmod +x tex.sh
+	./tex.sh
 
 clean:
 	rm -f $(OBJ)
