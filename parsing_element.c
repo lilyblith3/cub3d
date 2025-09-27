@@ -1,8 +1,5 @@
 #include "parsing.h"
 
-// DELETE your old parse_color_line function
-// REPLACE with this:
-
 static char *get_color_part(char *trimmed)
 {
     int i;
