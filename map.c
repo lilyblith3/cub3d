@@ -218,3 +218,206 @@ void	print_final_result(t_game *game)
 	}
 	printf("\n=== All validations passed! Ready for raycasting! ===\n");
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// #include "parsing.h"
+
+// static char	*ft_strtrim_spaces(char *str)
+// {
+// 	char	*start;
+// 	char	*end;
+// 	int		len;
+// 	int		i;
+
+// 	if (!str)
+// 		return (NULL);
+// 	start = str;
+// 	while (*start == ' ' || *start == '\t')
+// 		start++;
+// 	end = start + ft_strlen(start) - 1;
+// 	while (end > start && (*end == ' ' || *end == '\t'))
+// 		end--;
+// 	len = end - start + 1;
+// 	i = 0;
+// 	while (i < len)
+// 	{
+// 		str[i] = start[i];
+// 		i++;
+// 	}
+// 	str[len] = '\0';
+// 	return (str);
+// }
+
+// static int	ft_isdigit_str(char *str)
+// {
+// 	int	i;
+
+// 	if (!str || !str[0])
+// 		return (0);
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] < '0' || str[i] > '9')
+// 			return (0);
+// 		i++;
+// 	}
+// 	return (1);
+// }
+
+// static int	validate_rgb_value(char *str)
+// {
+// 	int	value;
+
+// 	if (!ft_isdigit_str(str))
+// 		return (-1);
+// 	value = ft_atoi(str);
+// 	if (value < 0 || value > 255)
+// 		return (-1);
+// 	return (value);
+// }
+
+// static int	count_commas(char *str)
+// {
+// 	int	count;
+// 	int	i;
+
+// 	count = 0;
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == ',')
+// 			count++;
+// 		i++;
+// 	}
+// 	return (count);
+// }
+
+// static char	**split_rgb_components(char *color_str)
+// {
+// 	char	**components;
+// 	char	*trimmed;
+
+// 	trimmed = ft_strtrim_spaces(color_str);
+// 	if (!trimmed)
+// 		return (NULL);
+// 	if (count_commas(trimmed) != 2)
+// 		return (NULL);
+// 	components = ft_split(trimmed, ',');
+// 	return (components);
+// }
+
+// static void	free_components(char **components)
+// {
+// 	int	i;
+
+// 	if (!components)
+// 		return ;
+// 	i = 0;
+// 	while (components[i])
+// 	{
+// 		free(components[i]);
+// 		i++;
+// 	}
+// 	free(components);
+// }
+
+// static int	validate_components(char **components, int *rgb)
+// {
+// 	int	i;
+
+// 	if (!components)
+// 		return (0);
+// 	i = 0;
+// 	while (components[i] && i < 3)
+// 		i++;
+// 	if (i != 3 || components[3] != NULL)
+// 		return (0);
+// 	i = 0;
+// 	while (i < 3)
+// 	{
+// 		ft_strtrim_spaces(components[i]);
+// 		rgb[i] = validate_rgb_value(components[i]);
+// 		if (rgb[i] == -1)
+// 			return (0);
+// 		i++;
+// 	}
+// 	return (1);
+// }
+
+// int	parse_color(char *line, char identifier, int *r, int *g, int *b)
+// {
+// 	char	**components;
+// 	char	*color_str;
+// 	int		rgb[3];
+
+// 	if (!line || line[0] != identifier || line[1] != ' ')
+// 		return (0);
+// 	color_str = line + 2;
+// 	components = split_rgb_components(color_str);
+// 	if (!validate_components(components, rgb))
+// 	{
+// 		free_components(components);
+// 		return (-1);
+// 	}
+// 	*r = rgb[0];
+// 	*g = rgb[1];
+// 	*b = rgb[2];
+// 	free_components(components);
+// 	return (1);
+// }
+
+// int	handle_floor_color(t_data *data, char *line)
+// {
+// 	int	r;
+// 	int	g;
+// 	int	b;
+// 	int	result;
+
+// 	if (data->floor_color_set)
+// 		return (error_msg("Duplicate floor color"));
+// 	result = parse_color(line, 'F', &r, &g, &b);
+// 	if (result == 0)
+// 		return (0);
+// 	if (result == -1)
+// 		return (error_msg("Invalid floor color format"));
+// 	data->floor_r = r;
+// 	data->floor_g = g;
+// 	data->floor_b = b;
+// 	data->floor_color_set = 1;
+// 	return (1);
+// }
+
+// int	handle_ceiling_color(t_data *data, char *line)
+// {
+// 	int	r;
+// 	int	g;
+// 	int	b;
+// 	int	result;
+
+// 	if (data->ceiling_color_set)
+// 		return (error_msg("Duplicate ceiling color"));
+// 	result = parse_color(line, 'C', &r, &g, &b);
+// 	if (result == 0)
+// 		return (0);
+// 	if (result == -1)
+// 		return (error_msg("Invalid ceiling color format"));
+// 	data->ceiling_r = r;
+// 	data->ceiling_g = g;
+// 	data->ceiling_b = b;
+// 	data->ceiling_color_set = 1;
+// 	return (1);
+// }

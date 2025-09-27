@@ -29,6 +29,8 @@ typedef struct s_game
         int             colors_parsed;
 }       t_game;
 
+
+
 char    *read_entire_file(char *filename);
 int     count_lines(char *content);
 char    **split_lines(char *content, int line_count);
@@ -65,5 +67,7 @@ void    print_error(char *msg);
 
 int	parse_map(char **lines, int start_idx, t_game *game);
 void	print_final_result(t_game *game);
+
+
 
 #endif

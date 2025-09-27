@@ -1,101 +1,99 @@
 #include "parsing.h"
 
-
 int validate_extension(char *file_name)
 {
-          int len;
+	int len;
 
-          if (!file_name)
-                    return (0);
-          len = ft_strlen(file_name);
-          if (len < 5)
-                    return (0);
-          if (ft_strncmp(file_name + len - 4, ".cub", 4) != 0)
-                    return (0);
-          return (1);
+	if (!file_name)
+		return (0);
+	len = ft_strlen(file_name);
+	if (len < 5)
+		return (0);
+	if (ft_strncmp(file_name + len - 4, ".cub", 4) != 0)
+		return (0);
+	return (1);
 }
 
 int is_directory(char *path)
 {
-          int fd;
+	int fd;
 
-          fd = open(path, O_DIRECTORY);
-          if (fd >= 0)
-          {
-                    close(fd);
-                    return (1);
-          }
-          return (0);
+	fd = open(path, O_DIRECTORY);
+	if (fd >= 0)
+	{
+		close(fd);
+		return (1);
+	}
+	return (0);
 }
 
 int file_exists_and_readable(char *file_name)
 {
-          int fd;
+	int fd;
 
-          fd = open(file_name, O_RDONLY);
-          if (fd == -1)
-          {
-                    printf("Error: Cannot open file '%s': %s\n", file_name, strerror(errno));
-                    return (0);
-          }
-          close(fd);
-          return (1);
+	fd = open(file_name, O_RDONLY);
+	if (fd == -1)
+	{
+		printf("Error: Cannot open file '%s': %s\n", file_name, strerror(errno));
+		return (0);
+	}
+	close(fd);
+	return (1);
 }
 
 int valid_argument(int argc, char **argv)
 {
-          if (argc != 2)
-          {
-                    print_error("Invalid number of arguments");
-                    return (0);
-          }
+	if (argc != 2)
+	{
+		print_error("Invalid number of arguments");
+		return (0);
+	}
 
-          if (!argv[1])
-          {
-                    print_error("Invalid argument: NULL file path");
-                    return (0);
-          }
+	if (!argv[1])
+	{
+		print_error("Invalid argument: NULL file path");
+		return (0);
+	}
 
-          if (is_directory(argv[1]))
-          {
-                    print_error("Argument is a directory, not a file");
-                    return (0);
-          }
+	if (is_directory(argv[1]))
+	{
+		print_error("Argument is a directory, not a file");
+		return (0);
+	}
 
-          if (!file_exists_and_readable(argv[1]))
-                    return (0);
+	if (!file_exists_and_readable(argv[1]))
+		return (0);
 
-          if (!validate_extension(argv[1]))
-          {
-                    print_error("Invalid file extension. Use .cub files only");
-                    return (0);
-          }
+	if (!validate_extension(argv[1]))
+	{
+		print_error("Invalid file extension. Use .cub files only");
+		return (0);
+	}
 
-          return (1);
+	return (1);
 }
 
-
-void	print_parsed_elements(t_game *game)
+void print_parsed_elements(t_game *game)
 {
 	printf("\n=== PARSED ELEMENTS ===\n");
 	printf("North texture: %s\n", game->north_texture ? game->north_texture : "NULL");
 	printf("South texture: %s\n", game->south_texture ? game->south_texture : "NULL");
 	printf("West texture: %s\n", game->west_texture ? game->west_texture : "NULL");
 	printf("East texture: %s\n", game->east_texture ? game->east_texture : "NULL");
-	printf("Floor color: R:%d G:%d B:%d\n", 
-		game->floor_color[0], game->floor_color[1], game->floor_color[2]);
+	printf("Floor color: R:%d G:%d B:%d\n",
+	       game->floor_color[0], game->floor_color[1], game->floor_color[2]);
 	printf("Ceiling color: R:%d G:%d B:%d\n",
-		game->ceiling_color[0], game->ceiling_color[1], game->ceiling_color[2]);
+	       game->ceiling_color[0], game->ceiling_color[1], game->ceiling_color[2]);
 	printf("========================\n\n");
 }
 
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	t_game	game;
-	char	*file_content;
-	char	**lines;
-	int		line_count;
-	int		map_start;
+	t_game game;
+	char *file_content;
+	char **lines;
+	int line_count;
+	int map_start;
 
 	if (!valid_argument(argc, argv))
 		return (1);
@@ -116,6 +114,12 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	lines = split_lines(file_content, line_count);
+	// printf("=== ALL LINES FROM FILE ===\n");
+	// for (int debug_i = 0; debug_i < line_count; debug_i++)
+	// {
+	// 	printf("Line %d: '%s' (len: %d)\n", debug_i, lines[debug_i], ft_strlen(lines[debug_i]));
+	// }
+	// printf("=== LKHER D LINES ===\n");
 	if (!lines)
 	{
 		print_error("Failed to split file content");
@@ -124,6 +128,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	map_start = parse_elements(lines, &game);
+	printf("DEBUG: map_start returned = %d\n", map_start);
 	if (map_start == 0)
 	{
 		free(file_content);
@@ -131,13 +136,13 @@ int	main(int argc, char **argv)
 		free_game_struct(&game);
 		return (1);
 	}
-	if (!parse_map(lines, map_start, &game))
-	{
-		free(file_content);
-		free_string_array(lines);
-		free_game_struct(&game);
-		return (1);
-	}
+	// if (!parse_map(lines, map_start, &game))
+	// {
+	// 	free(file_content);
+	// 	free_string_array(lines);
+	// 	free_game_struct(&game);
+	// 	return (1);
+	// }
 	print_final_result(&game);
 	free(file_content);
 	free_string_array(lines);
