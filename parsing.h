@@ -29,6 +29,7 @@ typedef struct s_game
         int             colors_parsed;
 }       t_game;
 
+char    *ft_strdup(const char *s);
 
 
 char    *read_entire_file(char *filename);
@@ -50,6 +51,10 @@ char    *trim_whitespace(char *str);
 int     is_texture_line(char *line);
 int     is_color_line(char *line);
 
+int     check_duplicate_texture(t_game *game, char *trimmed);
+int     validate_texture_extension(char *path);
+int     check_extra_content(char *trimmed, char *path);
+
 int     validate_texture_file(char *path);
 int     parse_texture_line(char *line, t_game *game);
 
@@ -65,9 +70,10 @@ int     file_exists_and_readable(char *file_name);
 
 void    print_error(char *msg);
 
-int	parse_map(char **lines, int start_idx, t_game *game);
-void	print_final_result(t_game *game);
+int     parse_map(char **lines, int start_idx, t_game *game);
+void    print_final_result(t_game *game);
 
-
+int	is_valid_map_char(char c);
+int	is_player_char(char c);
 
 #endif

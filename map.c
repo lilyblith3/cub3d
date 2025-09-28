@@ -1,15 +1,6 @@
 #include "parsing.h"
 
-int	is_valid_map_char(char c)
-{
-	return (c == '0' || c == '1' || c == 'N' || 
-			c == 'S' || c == 'E' || c == 'W' || c == ' ');
-}
 
-int	is_player_char(char c)
-{
-	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
-}
 
 int	count_map_lines(char **lines, int start_idx)
 {
@@ -91,7 +82,7 @@ int	parse_map_array(char **lines, int start_idx, t_game *game)
 		if (ft_strlen(lines[line_idx]) == 0)
 		{
 			line_idx++;
-			continue;
+			continue ;
 		}
 		game->map[i] = pad_line_with_spaces(lines[line_idx], game->map_width);
 		if (!game->map[i])
@@ -141,15 +132,32 @@ int	validate_map_characters(t_game *game)
 	return (1);
 }
 
-int	is_wall_or_boundary(t_game *game, int y, int x)
+int	is_valid_position(t_game *game, int y, int x)
 {
-	if (y < 0 || y >= game->map_height || 
-		x < 0 || x >= game->map_width)
-		return (1);
-	return (game->map[y][x] == '1');
+	if (y < 0 || y >= game->map_height || x < 0 || x >= game->map_width)
+		return (0);
+	return (game->map[y][x] == '0' || is_player_char(game->map[y][x]));
 }
 
-int	validate_map_walls(t_game *game)
+void	flood_fill(t_game *game, char **visited, int y, int x)
+{
+	if (y < 0 || y >= game->map_height || x < 0 || x >= game->map_width)
+		return ;
+	if (visited[y][x] == '1' || game->map[y][x] == '1')
+		return ;
+	if (game->map[y][x] == ' ')
+	{
+		visited[y][x] = 'E';
+		return ;
+	}
+	visited[y][x] = '1';
+	flood_fill(game, visited, y - 1, x);
+	flood_fill(game, visited, y + 1, x);
+	flood_fill(game, visited, y, x - 1);
+	flood_fill(game, visited, y, x + 1);
+}
+
+int	check_flood_result(t_game *game, char **visited)
 {
 	int	i;
 	int	j;
@@ -160,22 +168,69 @@ int	validate_map_walls(t_game *game)
 		j = 0;
 		while (j < game->map_width)
 		{
-			if (game->map[i][j] == '0' || is_player_char(game->map[i][j]))
+			if (visited[i][j] == 'E')
 			{
-				if (!is_wall_or_boundary(game, i - 1, j) ||
-					!is_wall_or_boundary(game, i + 1, j) ||
-					!is_wall_or_boundary(game, i, j - 1) ||
-					!is_wall_or_boundary(game, i, j + 1))
-				{
-					printf("Error: Map not closed at (%d,%d)\n", i, j);
-					return (0);
-				}
+				printf("Error: Map not closed - reached edge at (%d,%d)\n", i, j);
+				return (0);
 			}
 			j++;
 		}
 		i++;
 	}
 	return (1);
+}
+
+char	**create_visited_array(t_game *game)
+{
+	char	**visited;
+	int		i;
+	int		j;
+
+	visited = malloc(sizeof(char *) * game->map_height);
+	if (!visited)
+		return (NULL);
+	i = 0;
+	while (i < game->map_height)
+	{
+		visited[i] = malloc(game->map_width + 1);
+		if (!visited[i])
+		{
+			while (i > 0)
+				free(visited[--i]);
+			free(visited);
+			return (NULL);
+		}
+		j = 0;
+		while (j < game->map_width)
+		{
+			visited[i][j] = '0';
+			j++;
+		}
+		visited[i][j] = '\0';
+		i++;
+	}
+	return (visited);
+}
+
+int	validate_map_walls(t_game *game)
+{
+	char	**visited;
+	int		result;
+	int		i;
+
+	visited = create_visited_array(game);
+	if (!visited)
+		return (0);
+	flood_fill(game, visited, game->player_y, game->player_x);
+	result = check_flood_result(game, visited);
+	i = 0;
+	while (i < game->map_height)
+	{
+		free(visited[i]);
+		i++;
+	}
+	free(visited);
+	return (result);
 }
 
 int	parse_map(char **lines, int start_idx, t_game *game)
@@ -218,18 +273,3 @@ void	print_final_result(t_game *game)
 	}
 	printf("\n=== All validations passed! Ready for raycasting! ===\n");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
