@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   file_utilis.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzari <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/03 09:48:16 by lzari             #+#    #+#             */
+/*   Updated: 2025/10/03 09:48:18 by lzari            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
 
 char	*ft_strdup(const char *s)
@@ -21,7 +33,6 @@ char	*ft_strdup(const char *s)
 	dup[i] = '\0';
 	return (dup);
 }
-
 
 char	*trim_whitespace(char *str)
 {
@@ -63,6 +74,8 @@ char	*read_entire_file(char *filename)
 	char	*temp;
 	int		bytes_read;
 	int		total_size;
+	int		i;
+	int		j;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
@@ -84,14 +97,14 @@ char	*read_entire_file(char *filename)
 		}
 		if (total_size > 0)
 		{
-			int i = 0;
+			i = 0;
 			while (i < total_size)
 			{
 				temp[i] = content[i];
 				i++;
 			}
 		}
-		int j = 0;
+		j = 0;
 		while (j < bytes_read)
 		{
 			temp[total_size + j] = buffer[j];
@@ -131,44 +144,43 @@ int	count_lines(char *content)
 	return (count);
 }
 
-char    **split_lines(char *content, int line_count)
+char	**split_lines(char *content, int line_count)
 {
-        char    **lines;
-        int             i;
-        int             j;
-        int             start;
-        int             line_idx;
+	char	**lines;
+	int		i;
+	int		j;
+	int		start;
+	int		line_idx;
 
-        lines = malloc(sizeof(char *) * (line_count + 1));
-        if (!lines)
-                return (NULL);
-        i = 0;
-        line_idx = 0;
-        while (content[i] && line_idx < line_count)
-        {
-                start = i;
-                while (content[i] && content[i] != '\n')
-                        i++;
-                lines[line_idx] = malloc(i - start + 1);
-                if (!lines[line_idx])
-                {
-                        while (line_idx > 0)
-                                free(lines[--line_idx]);
-                        free(lines);
-                        return (NULL);
-                }
-                j = 0;
-                while (start + j < i)
-                {
-                        lines[line_idx][j] = content[start + j];
-                        j++;
-                }
-                lines[line_idx][j] = '\0';
-                if (content[i] == '\n')
-                        i++;
-                line_idx++;
-        }
-        lines[line_idx] = NULL;
-        return (lines);
+	lines = malloc(sizeof(char *) * (line_count + 1));
+	if (!lines)
+		return (NULL);
+	i = 0;
+	line_idx = 0;
+	while (content[i] && line_idx < line_count)
+	{
+		start = i;
+		while (content[i] && content[i] != '\n')
+			i++;
+		lines[line_idx] = malloc(i - start + 1);
+		if (!lines[line_idx])
+		{
+			while (line_idx > 0)
+				free(lines[--line_idx]);
+			free(lines);
+			return (NULL);
+		}
+		j = 0;
+		while (start + j < i)
+		{
+			lines[line_idx][j] = content[start + j];
+			j++;
+		}
+		lines[line_idx][j] = '\0';
+		if (content[i] == '\n')
+			i++;
+		line_idx++;
+	}
+	lines[line_idx] = NULL;
+	return (lines);
 }
-

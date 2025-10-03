@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   texture_file_ops.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzari <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/03 09:49:20 by lzari             #+#    #+#             */
+/*   Updated: 2025/10/03 09:49:21 by lzari            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
 
-int validate_texture_file(char *path)
+int	validate_texture_file(char *path)
 {
 	int	fd;
 
@@ -29,8 +41,7 @@ int validate_texture_file(char *path)
 	return (1);
 }
 
-
-static char *get_texture_path(char *trimmed)
+static char	*get_texture_path(char *trimmed)
 {
 	int		i;
 	char	*start;
@@ -65,22 +76,19 @@ static char *get_texture_path(char *trimmed)
 	return (result);
 }
 
-
-static void assign_texture(t_game *game, char *trimmed, char *path)
+static void	assign_texture(t_game *game, char *trimmed, char *path)
 {
-    if (ft_strncmp(trimmed, "NO", 2) == 0)
-        game->north_texture = path;
-    else if (ft_strncmp(trimmed, "SO", 2) == 0)
-        game->south_texture = path;
-    else if (ft_strncmp(trimmed, "WE", 2) == 0)
-        game->west_texture = path;
-    else if (ft_strncmp(trimmed, "EA", 2) == 0)
-        game->east_texture = path;
+	if (ft_strncmp(trimmed, "NO", 2) == 0)
+		game->north_texture = path;
+	else if (ft_strncmp(trimmed, "SO", 2) == 0)
+		game->south_texture = path;
+	else if (ft_strncmp(trimmed, "WE", 2) == 0)
+		game->west_texture = path;
+	else if (ft_strncmp(trimmed, "EA", 2) == 0)
+		game->east_texture = path;
 }
 
-
-
-int parse_texture_line(char *line, t_game *game)
+int	parse_texture_line(char *line, t_game *game)
 {
 	char	*trimmed;
 	char	*path;
@@ -116,4 +124,3 @@ int parse_texture_line(char *line, t_game *game)
 	free(trimmed);
 	return (1);
 }
-

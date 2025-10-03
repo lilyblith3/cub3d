@@ -1,5 +1,16 @@
-#include "parsing.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color_parsing.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzari <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/03 09:48:05 by lzari             #+#    #+#             */
+/*   Updated: 2025/10/03 09:48:07 by lzari            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "parsing.h"
 
 static int	ft_isdigit_str(char *str)
 {
@@ -104,7 +115,9 @@ static int	parse_rgb_components(char *color_str, int *rgb)
 	}
 	while (color_str[pos] && ft_isspace(color_str[pos]))
 		pos++;
-	return (color_str[pos] == '\0' ? 1 : 0);
+	if (color_str[pos] == '\0')
+		return (1);
+	return (0);
 }
 
 int	parse_colors_values(char *color_str, int *rgb)

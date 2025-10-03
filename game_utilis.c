@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   game_utilis.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzari <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/03 09:48:26 by lzari             #+#    #+#             */
+/*   Updated: 2025/10/03 09:48:30 by lzari            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
 
 void	init_game_struct(t_game *game, char *filename)
@@ -28,7 +40,7 @@ void	free_string_array(char **array)
 	int	i;
 
 	if (!array)
-		return;
+		return ;
 	i = 0;
 	while (array[i])
 	{
@@ -54,11 +66,10 @@ void	free_game_struct(t_game *game)
 		free_string_array(game->map);
 }
 
-
 int	is_valid_map_char(char c)
 {
-	return (c == '0' || c == '1' || c == 'N' || 
-			c == 'S' || c == 'E' || c == 'W' || c == ' ');
+	return (c == '0' || c == '1' || c == 'N'
+		||c == 'S' || c == 'E' || c == 'W' || c == ' ');
 }
 
 int	is_player_char(char c)

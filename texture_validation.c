@@ -1,35 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   texture_validation.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzari <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/03 09:49:31 by lzari             #+#    #+#             */
+/*   Updated: 2025/10/03 09:49:32 by lzari            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
 
-int is_texture_line(char *line)
+int	is_texture_line(char *line)
 {
-    char *trimmed;
+	char	*trimmed;
 
-    trimmed = trim_whitespace(line);
-    if (!trimmed)
-        return (0);
-    if (ft_strncmp(trimmed, "NO ", 3) == 0 || ft_strncmp(trimmed, "SO ", 3) == 0 || ft_strncmp(trimmed, "WE ", 3) == 0 || ft_strncmp(trimmed, "EA ", 3) == 0)
-    {
-        free(trimmed);
-        return (1);
-    }
-    free(trimmed);
-    return (0);
+	trimmed = trim_whitespace(line);
+	if (!trimmed)
+		return (0);
+	if (ft_strncmp(trimmed, "NO ", 3) == 0 || ft_strncmp(trimmed, "SO ", 3) == 0
+		|| ft_strncmp(trimmed, "WE ", 3) == 0 || ft_strncmp(trimmed, "EA ",
+			3) == 0)
+	{
+		free(trimmed);
+		return (1);
+	}
+	free(trimmed);
+	return (0);
 }
 
-int is_color_line(char *line)
+int	is_color_line(char *line)
 {
-    char *trimmed;
+	char	*trimmed;
 
-    trimmed = trim_whitespace(line);
-    if (!trimmed)
-        return (0);
-    if (ft_strncmp(trimmed, "F ", 2) == 0 || ft_strncmp(trimmed, "C ", 2) == 0)
-    {
-        free(trimmed);
-        return (1);
-    }
-    free(trimmed);
-    return (0);
+	trimmed = trim_whitespace(line);
+	if (!trimmed)
+		return (0);
+	if (ft_strncmp(trimmed, "F ", 2) == 0 || ft_strncmp(trimmed, "C ", 2) == 0)
+	{
+		free(trimmed);
+		return (1);
+	}
+	free(trimmed);
+	return (0);
 }
 
 int	check_duplicate_texture(t_game *game, char *trimmed)

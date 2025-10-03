@@ -1,6 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzari <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/03 09:48:48 by lzari             #+#    #+#             */
+/*   Updated: 2025/10/03 09:48:50 by lzari            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
-
-
 
 int	count_map_lines(char **lines, int start_idx)
 {
@@ -109,8 +119,8 @@ int	validate_map_characters(t_game *game)
 		{
 			if (!is_valid_map_char(game->map[i][j]))
 			{
-				printf("Error: Invalid character '%c' at (%d,%d)\n", 
-					game->map[i][j], i, j);
+				printf("Error: Invalid character '%c' at (%d,%d)\n",
+					game->map[i][j],i,j);
 				return (0);
 			}
 			if (is_player_char(game->map[i][j]))
@@ -170,7 +180,8 @@ int	check_flood_result(t_game *game, char **visited)
 		{
 			if (visited[i][j] == 'E')
 			{
-				printf("Error: Map not closed - reached edge at (%d,%d)\n", i, j);
+				printf("Error: Map not closed - reached edge at (%d,%d)\n", i,
+						j);
 				return (0);
 			}
 			j++;
@@ -257,13 +268,19 @@ void	print_final_result(t_game *game)
 	printf("South texture: %s\n", game->south_texture);
 	printf("West texture: %s\n", game->west_texture);
 	printf("East texture: %s\n", game->east_texture);
-	printf("Floor color: R:%d G:%d B:%d\n", 
-		game->floor_color[0], game->floor_color[1], game->floor_color[2]);
+	printf("Floor color: R:%d G:%d B:%d\n",
+			game->floor_color[0],
+			game->floor_color[1],
+			game->floor_color[2]);
 	printf("Ceiling color: R:%d G:%d B:%d\n",
-		game->ceiling_color[0], game->ceiling_color[1], game->ceiling_color[2]);
+			game->ceiling_color[0],
+			game->ceiling_color[1],
+			game->ceiling_color[2]);
 	printf("Map size: %dx%d\n", game->map_width, game->map_height);
-	printf("Player position: (%d,%d) facing %c\n", 
-		game->player_x, game->player_y, game->player_dir);
+	printf("Player position: (%d,%d) facing %c\n",
+			game->player_x,
+			game->player_y,
+			game->player_dir);
 	printf("\nMap:\n");
 	i = 0;
 	while (i < game->map_height)
