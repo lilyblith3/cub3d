@@ -1,15 +1,20 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -O3
 NAME = cub
-SOURCES = main.c file_utilis.c game_utilis.c texture_file_ops.c texture_validation.c parsing_element.c map.c utilis.c color_parsing.c
+MLX = -Lminilibx -lmlx -lXext -lX11 -lm
+INCLUDE = libft/libft.a
+SOURCES = parse/main.c parse/file_utilis.c parse/game_utilis.c parse/texture_file_ops.c parse/texture_validation.c parse/parsing_element.c parse/map.c parse/utilis.c parse/color_parsing.c parse/map_part2.c  parse/color_parsing2.c parse/map_utilis.c parse/helpers.c parse/texture_file_ops_helpers.c\
+	game.c key_pressed.c map.c mlx.c ray_cast.c 
 OBJECTS = $(SOURCES:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(NAME)
+$(INCLUDE):
+	make  -C libft
+$(NAME): $(OBJECTS) $(INCLUDE)
+	$(CC) $(OBJECTS) $(INCLUDE) $(MLX) -o $(NAME)
 
-%.o: %.c parsing.h
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
